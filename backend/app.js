@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 require('dotenv').config();
 
@@ -20,6 +22,10 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(express.json());
+app.use(mongoSanitize());
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+}));
 
 app.use(cors);
 
