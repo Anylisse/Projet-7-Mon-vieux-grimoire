@@ -1,5 +1,6 @@
 const Book = require('../models/book');
 const fs = require('fs');
+const host = "mon-vieux-grimoire-backend-5py1.onrender.com";
 
 exports.createBook = (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
@@ -8,7 +9,7 @@ exports.createBook = (req, res, next) => {
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}optimized.webp`,
+        imageUrl: `${req.protocol}://${host}/images/${req.file.filename.split('.')[0]}optimized.webp`,
         averageRating: bookObject.ratings[0].grade
     });
 
@@ -20,7 +21,7 @@ exports.createBook = (req, res, next) => {
 exports.modifyBook = (req, res, next) => {
     const bookObject = req.file ? {
         ...JSON.parse(req.body.book),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}optimized.webp`,
+        imageUrl: `${req.protocol}://${host}/images/${req.file.filename.split('.')[0]}optimized.webp`,
     } : { ...req.body };
 
     delete bookObject._userId;
